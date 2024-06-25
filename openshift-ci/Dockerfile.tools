@@ -2,7 +2,7 @@
 # 
 # SPDX-License-Identifier: Apache-2.0
 
-FROM centos:7 as build-tools
+FROM centos:8 as build-tools
 ENV LANG=en_US.utf8
 ENV GOPATH /tmp/go
 ARG GO_PACKAGE_PATH=github.com/shipwright-io/build
