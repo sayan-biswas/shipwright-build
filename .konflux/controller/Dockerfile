@@ -10,6 +10,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -mod=vendor
 # --- start build stage #2
 FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
 
+# add labels
 LABEL \
     com.redhat.component="openshift-builds-controller" \
     name="openshift-builds/controller" \
