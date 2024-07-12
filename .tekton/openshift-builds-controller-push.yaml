@@ -10,8 +10,8 @@ metadata:
       == "konflux-test"
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: openshift-builds
-    appstudio.openshift.io/component: openshift-builds-controller
+    appstudio.openshift.io/application: openshift-builds-1-2
+    appstudio.openshift.io/component: openshift-builds-controller-1-2
     pipelines.appstudio.openshift.io/type: build
   name: openshift-builds-controller-on-push
   namespace: rh-ee-sabiswas-tenant
