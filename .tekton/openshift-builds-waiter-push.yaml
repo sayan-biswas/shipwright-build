@@ -10,10 +10,12 @@ metadata:
     pipelinesascode.tekton.dev/on-cel-expression: |
       event == "push" &&
       target_branch == "builds-1.1" &&
-      files.all.exists(x, x.matches('cmd/waiter/|.docker/waiter/')) ||      
-      files.all.exists(x, x.matches('go.mod|go.sum')) ||   
-      files.all.exists(x, x.matches('.tekton/openshift-builds-unit-test.yaml')) ||     
-      files.all.exists(x, x.matches('.tekton/openshift-builds-waiter-push.yaml'))
+      (
+        files.all.exists(x, x.matches('cmd/waiter/|.docker/waiter/')) ||      
+        files.all.exists(x, x.matches('go.mod|go.sum')) ||   
+        files.all.exists(x, x.matches('.tekton/openshift-builds-unit-test.yaml')) ||     
+        files.all.exists(x, x.matches('.tekton/openshift-builds-waiter-push.yaml'))
+      )
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: openshift-builds-1-1
