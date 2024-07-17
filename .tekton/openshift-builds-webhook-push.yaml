@@ -2,16 +2,24 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   annotations:
-    build.appstudio.openshift.io/repo: https://github.com/sayan-biswas/shipwright-build?rev={{revision}}
+    build.appstudio.openshift.io/repo: https://github.com/sayan-biswas/shipwright-build.git?rev={{revision}}
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "konflux-test"
+    pipelinesascode.tekton.dev/task: "[.tekton/openshift-builds-unit-test.yaml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      event == "push" &&
+      target_branch == "konflux-test" &&
+      (
+        files.all.exists(x, x.matches('version/|pkg/webhook/|pkg/ctxlog/|cmd/shipwright-build-webhook/|.docker/webhook/')) ||      
+        files.all.exists(x, x.matches('go.mod|go.sum')) ||   
+        files.all.exists(x, x.matches('.tekton/openshift-builds-unit-test.yaml')) ||     
+        files.all.exists(x, x.matches('.tekton/openshift-builds-webhook-push.yaml'))
+      )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: openshift-builds-1-2
-    appstudio.openshift.io/component: openshift-builds-webhook-1-2
+    appstudio.openshift.io/application: openshift-builds-1-4
+    appstudio.openshift.io/component: openshift-builds-webhook-1-4
     pipelines.appstudio.openshift.io/type: build
   name: openshift-builds-webhook-on-push
   namespace: rh-ee-sabiswas-tenant
@@ -24,7 +32,7 @@ spec:
   - name: output-image
     value: quay.io/redhat-user-workloads/rh-ee-sabiswas-tenant/openshift-builds/openshift-builds-webhook:{{revision}}
   - name: dockerfile
-    value: .konflux/webhook/Dockerfile
+    value: .docker/webhook/Dockerfile
   pipelineSpec:
     finally:
     - name: show-sbom

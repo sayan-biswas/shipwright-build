@@ -5,19 +5,19 @@ COPY . .
 
 RUN go version
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -mod=vendor -buildvcs=false -ldflags="-s -w" -o /tmp/openshift-builds-waiters ./cmd/waiter
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -mod=vendor -buildvcs=false -ldflags="-s -w" -o /tmp/openshift-builds-waiter ./cmd/waiter
 
 # --- start build stage #2
 FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
 
 LABEL \
-    com.redhat.component="openshift-builds-waiters" \
-    name="openshift-builds/waiters" \
+    com.redhat.component="openshift-builds-waiter" \
+    name="openshift-builds/waiter" \
     version=${CI_CONTAINER_VERSION} \
-    summary="Red Hat OpenShift Builds Waiters" \
+    summary="Red Hat OpenShift Builds Waiter" \
     maintainer="openshift-builds@redhat.com" \
-    description="Red Hat OpenShift Builds Waiters" \
-    io.k8s.display-name="Red Hat OpenShift Builds Waiters" \
+    description="Red Hat OpenShift Builds Waiter" \
+    io.k8s.display-name="Red Hat OpenShift Builds Waiter" \
     io.openshift.tags="builds,waiter"
 
 RUN \
@@ -29,6 +29,6 @@ RUN \
   mkdir /.docker && \
   chown 1000:1000 /.docker
 
-COPY --from=builder /tmp/openshift-builds-waiters .
+COPY --from=builder /tmp/openshift-builds-waiter .
 
-ENTRYPOINT ["./openshift-builds-waiters"]
+ENTRYPOINT ["./openshift-builds-waiter"]
