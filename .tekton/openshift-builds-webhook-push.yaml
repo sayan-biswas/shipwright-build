@@ -18,8 +18,8 @@ metadata:
       )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: openshift-builds-1-4
-    appstudio.openshift.io/component: openshift-builds-webhook-1-4
+    appstudio.openshift.io/application: openshift-builds
+    appstudio.openshift.io/component: openshift-builds-webhook
     pipelines.appstudio.openshift.io/type: build
   name: openshift-builds-webhook-on-push
   namespace: rh-ee-sabiswas-tenant
