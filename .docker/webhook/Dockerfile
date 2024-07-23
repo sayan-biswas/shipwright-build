@@ -1,5 +1,5 @@
 # --- start build stage #1
-FROM registry.access.redhat.com/ubi9/go-toolset:1.20 AS builder
+FROM registry.access.redhat.com/ubi9/go-toolset:1.21.11-2.1720624888 AS builder
 
 COPY . .
 
