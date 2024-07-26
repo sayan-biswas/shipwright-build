@@ -11,9 +11,9 @@ metadata:
       event == "push" &&
       target_branch == "builds-1.1" &&
       (
-        files.all.exists(x, x.matches('cmd/image-processing/|pkg/image/|.docker/image-processing/')) ||      
-        files.all.exists(x, x.matches('go.mod|go.sum')) ||   
-        files.all.exists(x, x.matches('.tekton/openshift-builds-unit-test.yaml')) ||     
+        files.all.exists(x, x.matches('cmd/image-processing/|pkg/image/|.docker/image-processing/')) ||
+        files.all.exists(x, x.matches('go.mod|go.sum')) ||
+        files.all.exists(x, x.matches('.tekton/openshift-builds-unit-test.yaml')) ||
         files.all.exists(x, x.matches('.tekton/openshift-builds-image-processing-push.yaml'))
       )
   creationTimestamp: null
@@ -33,6 +33,12 @@ spec:
     value: quay.io/redhat-user-workloads/rh-openshift-builds-tenant/openshift-builds/openshift-builds-image-processing:{{revision}}
   - name: dockerfile
     value: .docker/image-processing/Dockerfile
+  - name: hermetic
+    value: "true"
+  - name: prefetch-input
+    # --gomod-vendor-check - if the vendor/ directory does not exist, do the same thing as gomod-vendor.
+    # Otherwise, call go mod vendor and verify that nothing changed in the vendor/ directory. If anything did change, raise an error.
+    value: '{"packages": [{"type": "gomod"}], "flags": ["gomod-vendor-check"]}'
   pipelineSpec:
     finally:
     - name: show-sbom

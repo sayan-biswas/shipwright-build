@@ -12,7 +12,7 @@ FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4@sha256:a7d837b00520a32502ad
 
 LABEL \
   com.redhat.component="openshift-builds-image-bundler" \
-  name="openshift-builds/image-bundler" \ 
+  name="openshift-builds/image-bundler" \
   version=${CI_CONTAINER_VERSION} \
   summary="Red Hat OpenShift Builds Image Bundler" \
   maintainer="openshift-builds@redhat.com" \
