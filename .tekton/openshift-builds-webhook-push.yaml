@@ -11,9 +11,9 @@ metadata:
       event == "push" &&
       target_branch == "builds-1.1" &&
       (
-        files.all.exists(x, x.matches('version/|pkg/webhook/|pkg/ctxlog/|cmd/shipwright-build-webhook/|.docker/webhook/')) ||      
-        files.all.exists(x, x.matches('go.mod|go.sum')) ||   
-        files.all.exists(x, x.matches('.tekton/openshift-builds-unit-test.yaml')) ||     
+        files.all.exists(x, x.matches('version/|pkg/webhook/|pkg/ctxlog/|cmd/shipwright-build-webhook/|.docker/webhook/')) ||
+        files.all.exists(x, x.matches('go.mod|go.sum')) ||
+        files.all.exists(x, x.matches('.tekton/openshift-builds-unit-test.yaml')) ||
         files.all.exists(x, x.matches('.tekton/openshift-builds-webhook-push.yaml'))
       )
   creationTimestamp: null
@@ -33,6 +33,14 @@ spec:
     value: quay.io/redhat-user-workloads/rh-openshift-builds-tenant/openshift-builds/openshift-builds-webhook:{{revision}}
   - name: dockerfile
     value: .docker/webhook/Dockerfile
+  - name: hermetic
+    value: "true"
+  - name: prefetch-input
+    # --gomod-vendor-check - if the vendor/ directory does not exist, do the same thing as gomod-vendor.
+    # Otherwise, call go mod vendor and verify that nothing changed in the vendor/ directory. If anything did change, raise an error.
+    value: '{"packages": [{"type": "gomod"}], "flags": ["gomod-vendor-check"]}'
+  - name: build-source-image
+    value: "true"
   pipelineSpec:
     finally:
     - name: show-sbom
