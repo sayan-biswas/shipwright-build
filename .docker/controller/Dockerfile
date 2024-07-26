@@ -18,6 +18,7 @@ LABEL \
     summary="Red Hat OpenShift Builds Controller" \
     maintainer="openshift-builds@redhat.com" \
     description="Red Hat OpenShift Builds Controller" \
+    io.k8s.description="Red Hat OpenShift Builds Controller" \
     io.k8s.display-name="Red Hat OpenShift Builds Controller" \
     io.openshift.tags="builds,controller"
 

@@ -17,6 +17,7 @@ LABEL \
     summary="Red Hat OpenShift Builds webhook" \
     maintainer="openshift-builds@redhat.com" \
     description="Red Hat OpenShift Builds webhook" \
+    io.k8s.description="Red Hat OpenShift Builds webhook" \
     io.k8s.display-name="Red Hat OpenShift Builds webhook" \
     io.openshift.tags="builds,conversion-webhook"
 

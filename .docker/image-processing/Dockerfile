@@ -11,14 +11,15 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -mod=vendor
 FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4@sha256:a7d837b00520a32502ada85ae339e33510cdfdbc8d2ddf460cc838e12ec5fa5a
 
 LABEL \
-    com.redhat.component="openshift-builds-image-processing" \
-    name="openshift-builds/image-processing" \
-    version=${CI_CONTAINER_VERSION} \
-    summary="Red Hat OpenShift Builds Image Processing" \
-    maintainer="openshift-builds@redhat.com" \
-    description="Red Hat OpenShift Builds Image Processing" \
-    io.k8s.display-name="Red Hat OpenShift Builds Image Processing" \
-    io.openshift.tags="builds,image-processing"
+  com.redhat.component="openshift-builds-image-processing" \
+  name="openshift-builds/image-processing" \
+  version=${CI_CONTAINER_VERSION} \
+  summary="Red Hat OpenShift Builds Image Processing" \
+  maintainer="openshift-builds@redhat.com" \
+  description="Red Hat OpenShift Builds Image Processing" \
+  io.k8s.description="Red Hat OpenShift Builds Image Processing" \
+  io.k8s.display-name="Red Hat OpenShift Builds Image Processing" \
+  io.openshift.tags="builds,image-processing"
 
 RUN \
   microdnf clean all && \
