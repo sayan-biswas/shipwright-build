@@ -11,7 +11,7 @@ metadata:
       event == "push" &&
       target_branch == "builds-1.1" &&
       (
-        files.all.exists(x, x.matches('version/|pkg/controller/|pkg/client|pkg/reconciler|pkg/volumes|pkg/validate|pkg/env|pkg/metrics/|pkg/apis/|pkg/config/|pkg/ctxlog/|cmd/shipwright-build-controller/|.docker/controller/')) ||
+        files.all.exists(x, x.matches('version/|pkg/controller/|pkg/client|pkg/reconciler|pkg/volumes|pkg/validate|pkg/env|pkg/metrics/|pkg/apis/|pkg/config/|pkg/ctxlog/|cmd/shipwright-build-controller/|.konflux/controller/')) ||
         files.all.exists(x, x.matches('go.mod|go.sum')) ||
         files.all.exists(x, x.matches('.tekton/openshift-builds-unit-test.yaml')) ||
         files.all.exists(x, x.matches('.tekton/openshift-builds-controller-push.yaml'))
@@ -32,7 +32,7 @@ spec:
   - name: output-image
     value: quay.io/redhat-user-workloads/rh-openshift-builds-tenant/openshift-builds/openshift-builds-controller:{{revision}}
   - name: dockerfile
-    value: .docker/controller/Dockerfile
+    value: .konflux/controller/Dockerfile
   - name: hermetic
     value: "true"
   - name: prefetch-input

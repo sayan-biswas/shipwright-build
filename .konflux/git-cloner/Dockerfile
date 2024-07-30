@@ -20,7 +20,21 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -mod=vendor
 # --- start build stage #2
 # RPM dependencies can't be fetched hermetically with Cachi2
 # Using UBI 9 which already includes necessary tar package
-FROM registry.access.redhat.com/ubi9/ubi:9.4@sha256:763f30167f92ec2af02bf7f09e75529de66e98f05373b88bef3c631cdcc39ad8
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4@sha256:73f7dcacb460dad137a58f24668470a5a2e47378838a0190eef0ab532c6e8998
+
+RUN \
+  microdnf --assumeyes --nodocs install git git-lfs && \
+  microdnf clean all && \
+  rm -rf /var/cache/yum && \
+  echo 'nonroot:x:1000:1000:nonroot:/:/sbin/nologin' > /etc/passwd && \
+  echo 'nonroot:x:1000:' > /etc/group && \
+  mkdir /.docker && chown 1000:1000 /.docker && \
+  mkdir /.ssh && chown 1000:1000 /.ssh
+
+COPY --from=builder /opt/app-root/src/openshift-builds-git-cloner .
+COPY LICENSE /licenses/
+
+ENTRYPOINT ["./openshift-builds-git-cloner"]
 
 LABEL \
     com.redhat.component="openshift-builds-git-cloner" \
@@ -32,15 +46,3 @@ LABEL \
     io.k8s.description="Red Hat OpenShift Builds Git Cloner" \
     io.k8s.display-name="Red Hat OpenShift Builds Git Cloner" \
     io.openshift.tags="builds,git-cloner"
-
-RUN \
-  echo 'nonroot:x:1000:1000:nonroot:/:/sbin/nologin' > /etc/passwd && \
-  echo 'nonroot:x:1000:' > /etc/group && \
-  mkdir /.docker && chown 1000:1000 /.docker && \
-  mkdir /.ssh && chown 1000:1000 /.ssh
-
-COPY --from=builder /opt/app-root/src/openshift-builds-git-cloner .
-COPY LICENSE /licenses/
-
-ENTRYPOINT ["./openshift-builds-git-cloner"]
-

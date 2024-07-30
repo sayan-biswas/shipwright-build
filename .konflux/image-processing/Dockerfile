@@ -15,21 +15,10 @@ COPY version/ version/
 
 RUN go version
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -mod=vendor -ldflags="-s -w" -o openshift-builds-image-bundler ./cmd/bundle
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -mod=vendor -ldflags="-s -w" -o openshift-builds-image-processing ./cmd/image-processing
 
 # --- start build stage #2
 FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4@sha256:104cf11d890aeb7dd5728b7d7732e175a0e4018f1bb00d2faebcc8f6bf29bd52
-
-LABEL \
-    com.redhat.component="openshift-builds-image-bundler" \
-    name="openshift-builds/image-bundler" \
-    version="v1.1.0" \
-    summary="Red Hat OpenShift Builds Image Bundler" \
-    maintainer="openshift-builds@redhat.com" \
-    description="Red Hat OpenShift Builds Image Bundler" \
-    io.k8s.description="Red Hat OpenShift Builds Image Bundler" \
-    io.k8s.display-name="Red Hat OpenShift Builds Image Bundler" \
-    io.openshift.tags="builds,image-bundler"
 
 RUN \
   microdnf clean all && \
@@ -39,7 +28,18 @@ RUN \
   mkdir /.docker && \
   chown 1000:1000 /.docker
 
-COPY --from=builder /opt/app-root/src/openshift-builds-image-bundler .
+COPY --from=builder /opt/app-root/src/openshift-builds-image-processing .
 COPY LICENSE /licenses/
 
-ENTRYPOINT ["./openshift-builds-image-bundler"]
+ENTRYPOINT ["./openshift-builds-image-processing"]
+
+LABEL \
+    com.redhat.component="openshift-builds-image-processing" \
+    name="openshift-builds/image-processing" \
+    version="v1.1.0" \
+    summary="Red Hat OpenShift Builds Image Processing" \
+    maintainer="openshift-builds@redhat.com" \
+    description="Red Hat OpenShift Builds Image Processing" \
+    io.k8s.description="Red Hat OpenShift Builds Image Processing" \
+    io.k8s.display-name="Red Hat OpenShift Builds Image Processing" \
+    io.openshift.tags="builds,image-processing"

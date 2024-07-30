@@ -12,7 +12,7 @@ metadata:
       event == "pull_request" &&
       target_branch == "builds-1.1" &&
       (
-        files.all.exists(x, x.matches('version/|pkg/webhook/|pkg/ctxlog/|cmd/shipwright-build-webhook/|.docker/webhook/')) ||
+        files.all.exists(x, x.matches('version/|pkg/webhook/|pkg/ctxlog/|cmd/shipwright-build-webhook/|.konflux/webhook/')) ||
         files.all.exists(x, x.matches('go.mod|go.sum')) ||
         files.all.exists(x, x.matches('.tekton/openshift-builds-unit-test.yaml')) ||
         files.all.exists(x, x.matches('.tekton/openshift-builds-webhook-pull-request.yaml'))
@@ -35,7 +35,7 @@ spec:
   - name: image-expires-after
     value: 5d
   - name: dockerfile
-    value: .docker/webhook/Dockerfile
+    value: .konflux/webhook/Dockerfile
   - name: hermetic
     value: "true"
   - name: prefetch-input
