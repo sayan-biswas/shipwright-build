@@ -28,10 +28,10 @@ RUN \
   mkdir /.docker && \
   chown 1000:1000 /.docker
 
-COPY --from=builder /opt/app-root/src/openshift-builds-image-processing .
+COPY --from=builder /opt/app-root/src/openshift-builds-image-processing /ko-app/image-processing
 COPY LICENSE /licenses/
 
-ENTRYPOINT ["./openshift-builds-image-processing"]
+ENTRYPOINT ["/ko-app/image-processing"]
 
 LABEL \
     com.redhat.component="openshift-builds-image-processing" \
