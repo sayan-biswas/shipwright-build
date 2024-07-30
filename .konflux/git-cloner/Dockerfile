@@ -31,10 +31,10 @@ RUN \
   mkdir /.docker && chown 1000:1000 /.docker && \
   mkdir /.ssh && chown 1000:1000 /.ssh
 
-COPY --from=builder /opt/app-root/src/openshift-builds-git-cloner .
+COPY --from=builder /opt/app-root/src/openshift-builds-git-cloner /ko-app/git
 COPY LICENSE /licenses/
 
-ENTRYPOINT ["./openshift-builds-git-cloner"]
+ENTRYPOINT ["/ko-app/git"]
 
 LABEL \
     com.redhat.component="openshift-builds-git-cloner" \

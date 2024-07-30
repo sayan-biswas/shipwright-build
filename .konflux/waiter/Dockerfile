@@ -31,10 +31,10 @@ RUN \
   mkdir /.docker && \
   chown 1000:1000 /.docker
 
-COPY --from=builder /opt/app-root/src/openshift-builds-waiter .
+COPY --from=builder /opt/app-root/src/openshift-builds-waiter /ko-app/waiter
 COPY LICENSE /licenses/
 
-ENTRYPOINT ["./openshift-builds-waiter"]
+ENTRYPOINT ["/ko-app/waiter"]
 
 LABEL \
     com.redhat.component="openshift-builds-waiter" \

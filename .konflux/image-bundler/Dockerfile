@@ -28,10 +28,10 @@ RUN \
   mkdir /.docker && \
   chown 1000:1000 /.docker
 
-COPY --from=builder /opt/app-root/src/openshift-builds-image-bundler .
+COPY --from=builder /opt/app-root/src/openshift-builds-image-bundler /ko-app/bundle
 COPY LICENSE /licenses/
 
-ENTRYPOINT ["./openshift-builds-image-bundler"]
+ENTRYPOINT ["/ko-app/bundle"]
 
 LABEL \
     com.redhat.component="openshift-builds-image-bundler" \
