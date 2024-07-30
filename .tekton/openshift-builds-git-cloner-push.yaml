@@ -34,7 +34,11 @@ spec:
   - name: dockerfile
     value: .konflux/git-cloner/Dockerfile
   - name: hermetic
-    value: "false"
+    value: "true"
+  - name: prefetch-input
+    # --gomod-vendor-check - if the vendor/ directory does not exist, do the same thing as gomod-vendor.
+    # Otherwise, call go mod vendor and verify that nothing changed in the vendor/ directory. If anything did change, raise an error.
+    value: '{"packages": [{"type": "gomod"},{"type": "rpm","path": ".konflux/git-cloner"}], "flags": ["gomod-vendor-check"]}'
   - name: build-source-image
     value: "true"
   pipelineSpec:
@@ -110,6 +114,10 @@ spec:
     - default: ""
       description: Build dependencies to be prefetched by Cachi2
       name: prefetch-input
+      type: string
+    - default: "true"
+      description: Enable dev-package-managers in prefetch task
+      name: prefetch-dev-package-managers-enabled
       type: string
     - default: "false"
       description: Java build
@@ -196,6 +204,8 @@ spec:
       params:
       - name: input
         value: $(params.prefetch-input)
+      - name: dev-package-managers
+        value: $(params.prefetch-dev-package-managers-enabled)
       runAfter:
       - clone-repository
       taskRef:
