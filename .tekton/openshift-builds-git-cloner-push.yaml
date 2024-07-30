@@ -11,7 +11,7 @@ metadata:
       event == "push" &&
       target_branch == "builds-1.1" &&
       (
-        files.all.exists(x, x.matches('cmd/git/|pkg/git/|.docker/git-cloner/')) ||
+        files.all.exists(x, x.matches('cmd/git/|pkg/git/|.konflux/git-cloner/')) ||
         files.all.exists(x, x.matches('go.mod|go.sum')) ||
         files.all.exists(x, x.matches('.tekton/openshift-builds-unit-test.yaml')) ||
         files.all.exists(x, x.matches('.tekton/openshift-builds-git-cloner-push.yaml'))
@@ -32,13 +32,9 @@ spec:
   - name: output-image
     value: quay.io/redhat-user-workloads/rh-openshift-builds-tenant/openshift-builds/openshift-builds-git-cloner:{{revision}}
   - name: dockerfile
-    value: .docker/git-cloner/Dockerfile
+    value: .konflux/git-cloner/Dockerfile
   - name: hermetic
-    value: "true"
-  - name: prefetch-input
-    # --gomod-vendor-check - if the vendor/ directory does not exist, do the same thing as gomod-vendor.
-    # Otherwise, call go mod vendor and verify that nothing changed in the vendor/ directory. If anything did change, raise an error.
-    value: '{"packages": [{"type": "gomod"}], "flags": ["gomod-vendor-check"]}'
+    value: "false"
   - name: build-source-image
     value: "true"
   pipelineSpec:
