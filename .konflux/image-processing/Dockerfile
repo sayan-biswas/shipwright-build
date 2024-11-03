@@ -1,24 +1,10 @@
-# --- start build stage #1
-FROM registry.access.redhat.com/ubi9/go-toolset:1.21.11-7@sha256:d128c3d36878251f039606f144ef2608746c3203708b722295e6c571df1d8613 AS builder
+FROM registry.access.redhat.com/ubi9/go-toolset@sha256:97e30a01caeece72ee967013e7c7af777ea4ee93840681ddcfe38a87eb4c084a AS builder
 
-# Copy the Go Modules manifests
-COPY go.mod go.mod
-COPY go.sum go.sum
+COPY . .
 
-# This are vendors dependencies. Copy this layer first to take advantage of cache hits.
-COPY vendor/ vendor/
+RUN CGO_ENABLED=0 GO111MODULE=on go build -a -mod=vendor -ldflags="-s -w" -o openshift-builds-image-processing ./cmd/image-processing
 
-# Copy the go source
-COPY cmd/ cmd/
-COPY pkg/ pkg/
-COPY version/ version/
-
-RUN go version
-
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -mod=vendor -ldflags="-s -w" -o openshift-builds-image-processing ./cmd/image-processing
-
-# --- start build stage #2
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4@sha256:104cf11d890aeb7dd5728b7d7732e175a0e4018f1bb00d2faebcc8f6bf29bd52
+FROM registry.access.redhat.com/ubi9-minimal@sha256:c0e70387664f30cd9cf2795b547e4a9a51002c44a4a86aa9335ab030134bf392
 
 RUN \
   microdnf clean all && \
