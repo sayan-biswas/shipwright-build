@@ -8,7 +8,7 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: |
       event == "push" &&
-      target_branch == "builds-1.1" &&
+      target_branch == "builds-1.2" &&
       (
         files.all.exists(x, x.matches('cmd/image-processing/|pkg/image/|.konflux/image-processing/')) ||
         files.all.exists(x, x.matches('go.mod|go.sum')) ||
@@ -16,8 +16,8 @@ metadata:
       )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: openshift-builds-1-1
-    appstudio.openshift.io/component: openshift-builds-image-processing-1-1
+    appstudio.openshift.io/application: openshift-builds-1-2
+    appstudio.openshift.io/component: openshift-builds-image-processing-1-2
     pipelines.appstudio.openshift.io/type: build
   name: openshift-builds-image-processing-on-push
   namespace: rh-openshift-builds-tenant
@@ -28,7 +28,7 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/rh-openshift-builds-tenant/openshift-builds-image-processing-1-1:{{revision}}
+    value: quay.io/redhat-user-workloads/rh-openshift-builds-tenant/openshift-builds-image-processing-1-2:{{revision}}
   - name: dockerfile
     value: .konflux/image-processing/Dockerfile
   - name: build-source-image
