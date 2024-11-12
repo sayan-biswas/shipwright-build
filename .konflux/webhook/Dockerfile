@@ -4,7 +4,7 @@ COPY . .
 
 RUN CGO_ENABLED=0 GO111MODULE=on go build -a -mod=vendor -ldflags="-s -w" -o openshift-builds-webhook ./cmd/shipwright-build-webhook
 
-FROM registry.access.redhat.com/ubi9-minimal@sha256:c0e70387664f30cd9cf2795b547e4a9a51002c44a4a86aa9335ab030134bf392
+FROM registry.access.redhat.com/ubi9-minimal@sha256:6907fbacb294ab6ba988f8bcc6bd5127f589966e5808fcb454de3e104983ae5b
 
 COPY --from=builder /opt/app-root/src/openshift-builds-webhook .
 COPY LICENSE /licenses/
